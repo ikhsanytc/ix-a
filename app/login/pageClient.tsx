@@ -20,7 +20,6 @@ import { Input } from "@/components/ui/input";
 import Navbar from "@/components/ui/navbar";
 import { useToast } from "@/hooks/use-toast";
 import { ResponseAPI } from "@/lib/supabase/server";
-import { getBaseUrl } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import React, { useState } from "react";

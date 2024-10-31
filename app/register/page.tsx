@@ -1,6 +1,6 @@
 import React from "react";
 import RegisterClient from "./pageClient";
-import { createClient, getUser } from "@/lib/supabase/server";
+import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 
 const Register = async () => {
