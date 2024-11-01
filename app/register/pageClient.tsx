@@ -44,6 +44,10 @@ const formRegister = z.object({
     .string()
     .min(4, "Tempat Lahir minimal 4 huruf!")
     .max(255, "Tempat Lahir maximal 255 huruf!"),
+  alamatRumah: z
+    .string()
+    .min(5, "Alamat Rumah minimal 5 huruf!")
+    .max(255, "Alamat Rumah maximal 255 huruf!"),
   NoHp: z
     .string()
     .min(6, "No Hp minimal 6 karakter!")
@@ -65,6 +69,7 @@ const RegisterClient = () => {
       quotes: "",
       tempatLahir: "",
       tglLahir: "",
+      alamatRumah: "",
     },
   });
   const submit: SubmitHandler<z.infer<typeof formRegister>> = async (
@@ -99,6 +104,7 @@ const RegisterClient = () => {
     form.setValue("NoHp", "");
     form.setValue("Ig", "");
     form.setValue("quotes", "");
+    form.setValue("alamatRumah", "");
     setIsLoading(false);
   };
   return (
@@ -173,6 +179,19 @@ const RegisterClient = () => {
                     <FormLabel className="font-bold">Tempat Lahir</FormLabel>
                     <FormControl>
                       <Input placeholder="Tempat Lahir..." {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="alamatRumah"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-bold">Alamat Rumah</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Alamat Rumah..." {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

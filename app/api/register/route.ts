@@ -9,15 +9,32 @@ export type RegisterType = {
   NoHp: string;
   Ig: string;
   quotes: string;
+  alamatRumah: string;
 };
 
 export async function POST(req: NextRequest) {
-  const { nama, tglLahir, email, tempatLahir, NoHp, Ig, quotes }: RegisterType =
-    await req.json();
+  const {
+    nama,
+    tglLahir,
+    email,
+    tempatLahir,
+    NoHp,
+    Ig,
+    quotes,
+    alamatRumah,
+  }: RegisterType = await req.json();
   const protocol = req.headers.get("x-forwarded-proto") || "http"; // Menentukan protokol, biasanya 'http' atau 'https'
   const host = req.headers.get("host");
   const baseUrl = `${protocol}://${host}`;
-  if (!nama || !tglLahir || !email || !tempatLahir || !NoHp || !quotes) {
+  if (
+    !nama ||
+    !tglLahir ||
+    !email ||
+    !tempatLahir ||
+    !NoHp ||
+    !quotes ||
+    !alamatRumah
+  ) {
     return NextResponse.json(
       {
         message: "Bad request",
@@ -42,6 +59,7 @@ export async function POST(req: NextRequest) {
           NoHp,
           Ig,
           quotes,
+          alamatRumah,
         },
       },
     });
