@@ -173,12 +173,15 @@ const DataSiswaClient: FC<Props> = ({ isAdmin }) => {
                 return (
                   <li>
                     <p>Nama : {item.username}</p>
-                    <p>Email : {item.email}</p>
-                    <p>
-                      Tempat/Tanggal Lahir : {item.tempatlahir}, {item.tgllahir}
-                    </p>
+                    {isAdmin && <p>Email : {item.email}</p>}
+                    {isAdmin && (
+                      <p>
+                        Tempat/Tanggal Lahir : {item.tempatlahir},{" "}
+                        {item.tgllahir}
+                      </p>
+                    )}
                     <p>Alamat Rumah : {item.alamatrumah}</p>
-                    <p>No Hp : {item.nohp}</p>
+                    {isAdmin && <p>No Hp : {item.nohp}</p>}
                     <p>
                       Ig : {item.ig === "" ? "Tidak ada" : tambahAt(item.ig!)}
                     </p>
