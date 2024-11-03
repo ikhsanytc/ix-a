@@ -146,7 +146,7 @@ const DataSiswaClient: FC<Props> = ({ isAdmin }) => {
                       <TableCell>{item.username}</TableCell>
                       <TableCell>{item.alamatrumah}</TableCell>
                       <TableCell>
-                        {item.ig === "" ? "Tidak ada" : item.ig}
+                        {item.ig === "" ? "Tidak ada" : tambahAt(item.ig!)}
                       </TableCell>
                       <TableCell>{item.quotes}</TableCell>
                     </TableRow>
