@@ -18,10 +18,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import Navbar from "@/components/ui/navbar";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { ResponseAPI } from "@/lib/supabase/server";
+import { fetchAPI } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useState } from "react";
@@ -76,14 +75,10 @@ const RegisterClient = () => {
     dataVal
   ) => {
     setIsLoading(true);
-    const res = await fetch("/api/register", {
+    const data = await fetchAPI("register", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(dataVal),
+      data: dataVal,
     });
-    const data = (await res.json()) as ResponseAPI;
     if (data.error) {
       setIsLoading(false);
       toast({
@@ -109,8 +104,7 @@ const RegisterClient = () => {
   };
   return (
     <div className="px-4 flex">
-      <Navbar />
-      <Card className="w-full mt-20 mb-5 lg:w-1/2 mx-auto relative">
+      <Card className="w-full mt-5 mb-5 lg:w-1/2 mx-auto relative">
         {isLoading ? (
           <div className="w-full h-full absolute bg-slate-200 rounded-lg backdrop-filter backdrop-blur bg-opacity-20 flex justify-center items-center">
             <h1 className="font-semibold text-xl">Tunggu Sebentar...</h1>

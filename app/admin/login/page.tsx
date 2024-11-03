@@ -9,12 +9,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
   Form,
   FormControl,
   FormField,
@@ -26,8 +20,8 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { fetchAPI } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { EllipsisVertical } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
@@ -35,38 +29,32 @@ import { z } from "zod";
 const loginScheme = z.object({
   email: z
     .string()
-    .min(5, "Email minimal 5 huruf!")
-    .max(255, "Email maximal 255 huruf"),
+    .min(5, "Email minimal 5 karakter")
+    .max(255, "Email maximal 255 karakter"),
+  password: z.string().min(8, "Password minimal 8 karakter"),
 });
 
-const LoginClient = () => {
-  const [isLoading, setIsLoading] = useState(false);
+const LoginAdmin = () => {
   const { toast } = useToast();
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
   const form = useForm<z.infer<typeof loginScheme>>({
     resolver: zodResolver(loginScheme),
     defaultValues: {
       email: "",
+      password: "",
     },
   });
   const submit: SubmitHandler<z.infer<typeof loginScheme>> = async (
     dataVal
   ) => {
     setIsLoading(true);
-    const data = await fetchAPI("login", {
+    const data = await fetchAPI("admin/login", {
       method: "POST",
       data: dataVal,
     });
     if (data.error) {
       setIsLoading(false);
-      if (data.message === "Signups not allowed for otp") {
-        toast({
-          title: "Kesalahan saat login",
-          description:
-            "Email yang anda tulis tidak ada dalam database! register dulu sana!",
-          variant: "destructive",
-        });
-        return;
-      }
       toast({
         title: "Kesalahan saat login",
         description: data.message,
@@ -76,13 +64,12 @@ const LoginClient = () => {
     }
     toast({
       title: "Sukses",
-      description: "Cek email mu, saya mengirim sesuatu untuk verifikasi!",
+      description: "Selamat datang!",
     });
-    form.setValue("email", "");
-    setIsLoading(false);
+    router.push("/home");
   };
   return (
-    <div className="flex px-4 justify-center items-center min-h-screen">
+    <div className="flex justify-center items-center px-4 min-h-screen">
       <Card className="w-full lg:w-1/2 relative">
         {isLoading ? (
           <div className="w-full h-full absolute bg-slate-200 rounded-lg backdrop-filter backdrop-blur bg-opacity-20 flex justify-center items-center">
@@ -95,9 +82,9 @@ const LoginClient = () => {
             className={isLoading ? "pointer-events-none" : ""}
           >
             <CardHeader>
-              <CardTitle>Login</CardTitle>
+              <CardTitle>Login Sebagai Admin</CardTitle>
               <CardDescription>
-                Masuk ke akun kalian lewat sini!
+                Anda bisa menjadi admin di web ini dengan login (ytta)
               </CardDescription>
             </CardHeader>
             <CardContent className="flex flex-col gap-4">
@@ -106,7 +93,7 @@ const LoginClient = () => {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="font-semibold">Email</FormLabel>
+                    <FormLabel>Email</FormLabel>
                     <FormControl>
                       <Input placeholder="Email..." {...field} />
                     </FormControl>
@@ -114,31 +101,31 @@ const LoginClient = () => {
                   </FormItem>
                 )}
               />
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Password</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="password"
+                        placeholder="Password..."
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </CardContent>
-            <CardFooter className="flex flex-col gap-4">
-              <div className="flex w-full gap-2">
-                <Button type="submit" className="w-full">
-                  Submit
-                </Button>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button size="icon" variant="secondary">
-                      <EllipsisVertical />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    <DropdownMenuItem asChild>
-                      <Link href="/admin/login">Login sebagai admin</Link>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-              <p>
-                Tidak punya akun?{" "}
-                <Link href="/register" className="hover:underline">
-                  Register
-                </Link>
-              </p>
+            <CardFooter className="flex gap-4 flex-col">
+              <Button className="w-full" type="submit">
+                Submit
+              </Button>
+              <Button className="w-full" variant="secondary" asChild>
+                <Link href="/login">Kembali</Link>
+              </Button>
             </CardFooter>
           </form>
         </Form>
@@ -147,4 +134,4 @@ const LoginClient = () => {
   );
 };
 
-export default LoginClient;
+export default LoginAdmin;

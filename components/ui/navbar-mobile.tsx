@@ -4,13 +4,14 @@ import { Menu } from "lucide-react";
 import { Button } from "./button";
 import { ButtonToggleTheme } from "./button-toggle-theme";
 import EachUtils from "./eachutils";
-import { logout, navbarLists } from "./navbar";
+import { navbarLists } from "./navbar";
 
 type Props = {
   isLogin: boolean;
+  handleLogoutClick: () => void;
 };
 
-const NavbarMobile: FC<Props> = ({ isLogin }) => {
+const NavbarMobile: FC<Props> = ({ isLogin, handleLogoutClick }) => {
   return (
     <div className="lg:hidden">
       <Sheet>
@@ -39,7 +40,7 @@ const NavbarMobile: FC<Props> = ({ isLogin }) => {
               }}
             />
             {isLogin ? (
-              <Button className="w-full" onClick={logout}>
+              <Button className="w-full" onClick={handleLogoutClick}>
                 Logout
               </Button>
             ) : null}

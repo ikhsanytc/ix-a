@@ -23,9 +23,6 @@ export async function POST(req: NextRequest) {
     quotes,
     alamatRumah,
   }: RegisterType = await req.json();
-  const protocol = req.headers.get("x-forwarded-proto") || "http"; // Menentukan protokol, biasanya 'http' atau 'https'
-  const host = req.headers.get("host");
-  const baseUrl = `${protocol}://${host}`;
   if (
     !nama ||
     !tglLahir ||
@@ -50,7 +47,7 @@ export async function POST(req: NextRequest) {
     const { error } = await supabase.auth.signInWithOtp({
       email,
       options: {
-        emailRedirectTo: `${baseUrl}/api/callback`,
+        emailRedirectTo: `${process.env.NEXT_PUBLIC_BASE_URL}/api/callback`,
         data: {
           username: nama,
           tglLahir,
