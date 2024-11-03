@@ -67,6 +67,8 @@ const LoginClient = () => {
       title: "Sukses",
       description: "Cek email mu, saya mengirim sesuatu untuk verifikasi!",
     });
+    form.setValue("email", "");
+    setIsLoading(false);
   };
   return (
     <div className="flex px-4 justify-center items-center min-h-screen">
@@ -103,11 +105,16 @@ const LoginClient = () => {
                 )}
               />
             </CardContent>
-            <CardFooter className="flex justify-between">
-              <Button type="submit">Submit</Button>
-              <Button type="button" asChild variant="secondary">
-                <Link href="/register">Register</Link>
+            <CardFooter className="flex flex-col gap-4">
+              <Button type="submit" className="w-full">
+                Submit
               </Button>
+              <p>
+                Tidak punya akun?{" "}
+                <Link href="/register" className="hover:underline">
+                  Register
+                </Link>
+              </p>
             </CardFooter>
           </form>
         </Form>

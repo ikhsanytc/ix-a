@@ -237,11 +237,16 @@ const RegisterClient = () => {
                 )}
               />
             </CardContent>
-            <CardFooter className="flex justify-between items-center">
-              <Button type="submit">Register</Button>
-              <Button type="button" variant="secondary" asChild>
-                <Link href="/login">Login</Link>
+            <CardFooter className="flex flex-col gap-4">
+              <Button type="submit" className="w-full">
+                Register
               </Button>
+              <p>
+                Punya akun?{" "}
+                <Link href="/login" className="hover:underline">
+                  Login
+                </Link>
+              </p>
             </CardFooter>
           </form>
         </Form>

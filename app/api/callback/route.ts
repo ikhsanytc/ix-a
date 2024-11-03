@@ -6,7 +6,9 @@ import { redirect } from "next/navigation";
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const code = searchParams.get("code");
-
+  if (!code) {
+    redirect("/error");
+  }
   const supabase = await createClient();
   const { error } = await supabase.auth.exchangeCodeForSession(code!);
   if (error) {

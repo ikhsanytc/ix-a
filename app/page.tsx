@@ -7,7 +7,7 @@ const SplashScreen = () => {
   const router = useRouter();
   useEffect(() => {
     setTimeout(() => {
-      router.push("/register");
+      router.push("/home");
     }, 3000);
   }, []);
   return (

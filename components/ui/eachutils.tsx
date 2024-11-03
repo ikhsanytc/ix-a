@@ -1,4 +1,4 @@
-import React from "react";
+import { Fragment } from "react";
 
 type EachUtilsProps<T> = {
   of: T[];
@@ -9,7 +9,7 @@ const EachUtils = <T,>({ of, renderItem }: EachUtilsProps<T>) => {
   return (
     <>
       {of.map((item, index) => (
-        <div key={index}>{renderItem(item, index)}</div>
+        <Fragment key={index}>{renderItem(item, index)}</Fragment>
       ))}
     </>
   );
