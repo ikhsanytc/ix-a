@@ -32,6 +32,7 @@ export async function logout() {
 
 const Navbar = () => {
   const [showLogout, setShowLogout] = useState(false);
+  const [showAbout, setShowAbout] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
   async function init() {
     const user = await getUser();
@@ -41,6 +42,9 @@ const Navbar = () => {
   }
   function handleLogoutClick() {
     setShowLogout(!showLogout);
+  }
+  function handleAboutClick() {
+    setShowAbout(!showAbout);
   }
   useEffect(() => {
     init();
@@ -57,7 +61,7 @@ const Navbar = () => {
               renderItem={(item) => {
                 if (item.display === "About") {
                   return (
-                    <Dialog>
+                    <Dialog open={showAbout} onOpenChange={setShowAbout}>
                       <DialogTrigger asChild>
                         <a className="cursor-pointer hover:underline font-medium">
                           About
@@ -99,6 +103,7 @@ const Navbar = () => {
           <NavbarMobile
             handleLogoutClick={handleLogoutClick}
             isLogin={isLogin}
+            handleAboutClick={handleAboutClick}
           />
         </div>
       </nav>

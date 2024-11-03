@@ -9,9 +9,14 @@ import { navbarLists } from "./navbar";
 type Props = {
   isLogin: boolean;
   handleLogoutClick: () => void;
+  handleAboutClick: () => void;
 };
 
-const NavbarMobile: FC<Props> = ({ isLogin, handleLogoutClick }) => {
+const NavbarMobile: FC<Props> = ({
+  isLogin,
+  handleLogoutClick,
+  handleAboutClick,
+}) => {
   return (
     <div className="lg:hidden">
       <Sheet>
@@ -32,6 +37,16 @@ const NavbarMobile: FC<Props> = ({ isLogin, handleLogoutClick }) => {
                       </Button>
                       <ButtonToggleTheme sizeButton="icon" />
                     </div>
+                  );
+                }
+                if (item.display === "About") {
+                  return (
+                    <Button
+                      className="w-full shadow-lg"
+                      onClick={handleAboutClick}
+                    >
+                      {item.display}
+                    </Button>
                   );
                 }
                 return (
