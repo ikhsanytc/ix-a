@@ -5,7 +5,6 @@ import { Button } from "./button";
 import { ButtonToggleTheme } from "./button-toggle-theme";
 import EachUtils from "./eachutils";
 import { logout, navbarLists } from "./navbar";
-import { User } from "@supabase/supabase-js";
 
 type Props = {
   isLogin: boolean;

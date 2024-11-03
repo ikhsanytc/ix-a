@@ -48,3 +48,5 @@ export const ButtonToggleTheme = forwardRef<HTMLButtonElement, Props>(
     );
   }
 );
+
+ButtonToggleTheme.displayName = "ButtonToggleTheme";

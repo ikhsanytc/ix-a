@@ -1,8 +1,6 @@
 "use client";
 
 import Navbar from "@/components/ui/navbar";
-import { FC } from "react";
-import { User } from "@supabase/supabase-js";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
