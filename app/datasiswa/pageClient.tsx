@@ -1,6 +1,7 @@
 "use client";
 import EachUtils from "@/components/ui/eachutils";
 import Navbar from "@/components/ui/navbar";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   Table,
   TableBody,
@@ -90,88 +91,92 @@ const DataSiswaClient: FC<Props> = ({ isAdmin }) => {
           <TabsTrigger value="text">Teks</TabsTrigger>
         </TabsList>
         <TabsContent value="table">
-          <Table className="mt-4">
-            <TableCaption className="text-center">
-              Seluruh siswa di kelas ada 26 siswa
-            </TableCaption>
-            <TableHeader>
-              {isAdmin ? (
+          {siswa.length == 0 ? (
+            <Skeleton className="h-96 w-full" />
+          ) : (
+            <Table className="mt-4">
+              <TableCaption className="text-center">
+                Seluruh siswa di kelas ada 26 siswa
+              </TableCaption>
+              <TableHeader>
+                {isAdmin ? (
+                  <TableRow>
+                    <TableHead>No</TableHead>
+                    <TableHead>Nama Lengkap</TableHead>
+                    <TableHead>Email</TableHead>
+                    <TableHead>Tanggal/Tempat Lahir</TableHead>
+                    <TableHead>Alamat Rumah</TableHead>
+                    <TableHead>No Hp</TableHead>
+                    <TableHead>Ig</TableHead>
+                    <TableHead>Quotes</TableHead>
+                  </TableRow>
+                ) : (
+                  <TableRow>
+                    <TableHead>No</TableHead>
+                    <TableHead>Nama Lengkap</TableHead>
+                    <TableHead>Alamat Rumah</TableHead>
+                    <TableHead>Ig</TableHead>
+                    <TableHead>Quotes</TableHead>
+                  </TableRow>
+                )}
+              </TableHeader>
+              <TableBody>
+                {isAdmin ? (
+                  <EachUtils
+                    of={siswa}
+                    renderItem={(item, idx) => (
+                      <TableRow>
+                        <TableCell>{++idx}</TableCell>
+                        <TableCell>{item.username}</TableCell>
+                        <TableCell>{item.email}</TableCell>
+                        <TableCell>
+                          {item.tempatlahir}, {item.tgllahir}
+                        </TableCell>
+                        <TableCell>{item.alamatrumah}</TableCell>
+                        <TableCell>{item.nohp}</TableCell>
+                        <TableCell>
+                          {item.ig === "" ? "Tidak ada" : tambahAt(item.ig!)}
+                        </TableCell>
+                        <TableCell>{item.quotes}</TableCell>
+                      </TableRow>
+                    )}
+                  />
+                ) : (
+                  <EachUtils
+                    of={siswa}
+                    renderItem={(item, idx) => (
+                      <TableRow>
+                        <TableCell>{++idx}</TableCell>
+                        <TableCell>{item.username}</TableCell>
+                        <TableCell>{item.alamatrumah}</TableCell>
+                        <TableCell>
+                          {item.ig === "" ? "Tidak ada" : tambahAt(item.ig!)}
+                        </TableCell>
+                        <TableCell>{item.quotes}</TableCell>
+                      </TableRow>
+                    )}
+                  />
+                )}
+              </TableBody>
+              <TableFooter>
                 <TableRow>
-                  <TableHead>No</TableHead>
-                  <TableHead>Nama Lengkap</TableHead>
-                  <TableHead>Email</TableHead>
-                  <TableHead>Tanggal/Tempat Lahir</TableHead>
-                  <TableHead>Alamat Rumah</TableHead>
-                  <TableHead>No Hp</TableHead>
-                  <TableHead>Ig</TableHead>
-                  <TableHead>Quotes</TableHead>
+                  <TableCell colSpan={isAdmin ? 7 : 4}>Total Data</TableCell>
+                  <TableCell className="text-right">
+                    {siswa.length} Siswa
+                  </TableCell>
                 </TableRow>
-              ) : (
-                <TableRow>
-                  <TableHead>No</TableHead>
-                  <TableHead>Nama Lengkap</TableHead>
-                  <TableHead>Alamat Rumah</TableHead>
-                  <TableHead>Ig</TableHead>
-                  <TableHead>Quotes</TableHead>
-                </TableRow>
-              )}
-            </TableHeader>
-            <TableBody>
-              {isAdmin ? (
-                <EachUtils
-                  of={siswa}
-                  renderItem={(item, idx) => (
-                    <TableRow>
-                      <TableCell>{++idx}</TableCell>
-                      <TableCell>{item.username}</TableCell>
-                      <TableCell>{item.email}</TableCell>
-                      <TableCell>
-                        {item.tempatlahir}, {item.tgllahir}
-                      </TableCell>
-                      <TableCell>{item.alamatrumah}</TableCell>
-                      <TableCell>{item.nohp}</TableCell>
-                      <TableCell>
-                        {item.ig === "" ? "Tidak ada" : tambahAt(item.ig!)}
-                      </TableCell>
-                      <TableCell>{item.quotes}</TableCell>
-                    </TableRow>
-                  )}
-                />
-              ) : (
-                <EachUtils
-                  of={siswa}
-                  renderItem={(item, idx) => (
-                    <TableRow>
-                      <TableCell>{++idx}</TableCell>
-                      <TableCell>{item.username}</TableCell>
-                      <TableCell>{item.alamatrumah}</TableCell>
-                      <TableCell>
-                        {item.ig === "" ? "Tidak ada" : tambahAt(item.ig!)}
-                      </TableCell>
-                      <TableCell>{item.quotes}</TableCell>
-                    </TableRow>
-                  )}
-                />
-              )}
-            </TableBody>
-            <TableFooter>
-              <TableRow>
-                <TableCell colSpan={isAdmin ? 7 : 4}>Total Data</TableCell>
-                <TableCell className="text-right">
-                  {siswa.length} Siswa
-                </TableCell>
-              </TableRow>
-            </TableFooter>
-          </Table>
+              </TableFooter>
+            </Table>
+          )}
         </TabsContent>
         <TabsContent value="text">
           <h1 className="text-2xl font-semibold mb-3">Biodata</h1>
-          <ol className="list-decimal text-xl pl-5 font-medium">
+          <ol className="list-decimal text-xl pl-5 font-thin">
             <EachUtils
               of={siswa}
               renderItem={(item) => {
                 return (
-                  <li>
+                  <li className="mb-3">
                     <p>Nama : {item.username}</p>
                     {isAdmin && <p>Email : {item.email}</p>}
                     {isAdmin && (

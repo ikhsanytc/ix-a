@@ -5,6 +5,7 @@ import { Button } from "./button";
 import { ButtonToggleTheme } from "./button-toggle-theme";
 import EachUtils from "./eachutils";
 import { navbarLists } from "./navbar";
+import Link from "next/link";
 
 type Props = {
   isLogin: boolean;
@@ -32,8 +33,8 @@ const NavbarMobile: FC<Props> = ({
                 if (index === 0) {
                   return (
                     <div className="flex gap-2 items-center">
-                      <Button className="w-full shadow-lg">
-                        {item.display}
+                      <Button className="w-full shadow-lg" asChild>
+                        <Link href={item.path}>{item.display}</Link>
                       </Button>
                       <ButtonToggleTheme sizeButton="icon" />
                     </div>
@@ -50,7 +51,9 @@ const NavbarMobile: FC<Props> = ({
                   );
                 }
                 return (
-                  <Button className="w-full shadow-lg">{item.display}</Button>
+                  <Button className="w-full shadow-lg" asChild>
+                    <Link href={item.path}>{item.display}</Link>
+                  </Button>
                 );
               }}
             />
