@@ -62,7 +62,7 @@ const AddSiswaClient = () => {
       });
       return;
     }
-    setIsLoading(true);
+    setIsLoading(false);
     form.setValue("nama", "");
     form.setValue("email", "");
     form.setValue("tglLahir", "");
