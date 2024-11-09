@@ -32,7 +32,8 @@ const DataSiswaClient: FC<Props> = ({ isAdmin }) => {
     const { error: profileError, data: profileData } = await supabaseClient
       .from("profiles")
       .select()
-      .neq("username", "admin");
+      .neq("username", "admin")
+      .order("username", { ascending: true });
     if (profileError) {
       toast({
         title: "Kesalahan saat mengambil data!",

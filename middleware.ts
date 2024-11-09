@@ -4,7 +4,7 @@ import { createClient, getUser } from "./lib/supabase/server";
 export async function middleware(req: NextRequest) {
   const res = NextResponse.next();
   const supabase = await createClient();
-  const includeURL = ["/home", "/datasiswa"];
+  const includeURL = ["/home", "/datasiswa", "/admin/add_siswa"];
   const { pathname } = req.nextUrl;
   if (!includeURL.includes(pathname)) {
     return res;

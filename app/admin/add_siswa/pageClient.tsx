@@ -1,13 +1,13 @@
 "use client";
-
+import { formRegister } from "@/app/register/pageClient";
 import { Button } from "@/components/ui/button";
 import {
   Card,
+  CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
-  CardContent,
-  CardFooter,
 } from "@/components/ui/card";
 import {
   Form,
@@ -18,49 +18,24 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import Navbar from "@/components/ui/navbar";
 import { Textarea } from "@/components/ui/textarea";
+import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/hooks/use-toast";
 import { fetchAPI } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-import { useState } from "react";
+import React, { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 
-export const formRegister = z.object({
-  nama: z
-    .string()
-    .min(4, "Nama Lengkap minimal 4 huruf!")
-    .max(255, "Nama Lengkap maximal 255 huruf!"),
-  tglLahir: z.string().refine((date) => !isNaN(Date.parse(date)), {
-    message: "Tanggal Lahir tidak valid",
-  }),
-  email: z
-    .string()
-    .min(5, "Email minimal 5 huruf!")
-    .max(255, "Email maximal 255 huruf!"),
-  tempatLahir: z
-    .string()
-    .min(4, "Tempat Lahir minimal 4 huruf!")
-    .max(255, "Tempat Lahir maximal 255 huruf!"),
-  alamatRumah: z
-    .string()
-    .min(5, "Alamat Rumah minimal 5 huruf!")
-    .max(255, "Alamat Rumah maximal 255 huruf!"),
-  NoHp: z
-    .string()
-    .min(6, "No Hp minimal 6 karakter!")
-    .max(255, "No Hp maximal 255 karakter!"),
-  Ig: z.string().optional(),
-  quotes: z.string().min(10, "Quotes minimal 10 huruf!"),
-});
-
-const RegisterClient = () => {
-  const [isLoading, setIsLoading] = useState(false);
+const AddSiswaClient = () => {
   const { toast } = useToast();
+  const [isLoading, setIsLoading] = useState(false);
   const form = useForm<z.infer<typeof formRegister>>({
     resolver: zodResolver(formRegister),
     defaultValues: {
+      alamatRumah: "",
       email: "",
       Ig: "",
       nama: "",
@@ -68,30 +43,26 @@ const RegisterClient = () => {
       quotes: "",
       tempatLahir: "",
       tglLahir: "",
-      alamatRumah: "",
     },
   });
-  const submit: SubmitHandler<z.infer<typeof formRegister>> = async (
+  const submitCuy: SubmitHandler<z.infer<typeof formRegister>> = async (
     dataVal
   ) => {
     setIsLoading(true);
-    const data = await fetchAPI("register", {
-      method: "POST",
+    const data = await fetchAPI("admin/add_user", {
       data: dataVal,
+      method: "POST",
     });
     if (data.error) {
       setIsLoading(false);
       toast({
-        title: "Kesalahan saat register",
+        title: "Kesalahan saat menambah user!",
         description: data.message,
         variant: "destructive",
       });
       return;
     }
-    toast({
-      title: "Sukses",
-      description: "Cek email mu, saya mengirim sesuatu untuk verifikasi!",
-    });
+    setIsLoading(true);
     form.setValue("nama", "");
     form.setValue("email", "");
     form.setValue("tglLahir", "");
@@ -100,11 +71,19 @@ const RegisterClient = () => {
     form.setValue("Ig", "");
     form.setValue("quotes", "");
     form.setValue("alamatRumah", "");
-    setIsLoading(false);
+    toast({
+      title: "Sukses menambah user",
+      action: (
+        <ToastAction altText="Lihat user" asChild>
+          <Link href="/datasiswa">Lihat</Link>
+        </ToastAction>
+      ),
+    });
   };
   return (
-    <div className="px-4 flex">
-      <Card className="w-full mt-5 mb-5 lg:w-1/2 mx-auto relative">
+    <div className="px-4">
+      <Navbar />
+      <Card className="mt-20 w-full lg:w-1/2 mx-auto shadow-lg relative mb-5">
         {isLoading ? (
           <div className="w-full h-full absolute bg-slate-200 rounded-lg backdrop-filter backdrop-blur bg-opacity-20 flex justify-center items-center">
             <h1 className="font-semibold text-xl">Tunggu Sebentar...</h1>
@@ -112,12 +91,12 @@ const RegisterClient = () => {
         ) : null}
         <Form {...form}>
           <form
-            onSubmit={form.handleSubmit(submit)}
+            onSubmit={form.handleSubmit(submitCuy)}
             className={isLoading ? "pointer-events-none" : ""}
           >
             <CardHeader>
-              <CardTitle>Register</CardTitle>
-              <CardDescription>Register biodata kalian!</CardDescription>
+              <CardTitle>Menambahkan Siswa Sesuka Hati Admin.</CardTitle>
+              <CardDescription>Tambah user!!!</CardDescription>
             </CardHeader>
             <CardContent className="flex flex-col gap-4">
               <FormField
@@ -125,7 +104,7 @@ const RegisterClient = () => {
                 name="nama"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="font-bold">Nama Lengkap</FormLabel>
+                    <FormLabel>Nama Lengkap</FormLabel>
                     <FormControl>
                       <Input placeholder="Nama Lengkap..." {...field} />
                     </FormControl>
@@ -231,16 +210,8 @@ const RegisterClient = () => {
                 )}
               />
             </CardContent>
-            <CardFooter className="flex flex-col gap-4">
-              <Button type="submit" className="w-full">
-                Register
-              </Button>
-              <p>
-                Punya akun?{" "}
-                <Link href="/login" className="hover:underline">
-                  Login
-                </Link>
-              </p>
+            <CardFooter>
+              <Button type="submit">Submit</Button>
             </CardFooter>
           </form>
         </Form>
@@ -249,4 +220,4 @@ const RegisterClient = () => {
   );
 };
 
-export default RegisterClient;
+export default AddSiswaClient;
